@@ -12,6 +12,8 @@ res = urllib.request.urlopen(url)
 html = res.read().decode('utf-8')
 jsonText = json.loads(html)
 html_doc = jsonText['content']
+html_doc = html_doc.replace('<br> <img src="https://www.zhihu.com/equation?', '<br> <img tmp="notinline" src="https://www.zhihu.com/equation?')
+html_doc = html_doc.replace('<br><img src="https://www.zhihu.com/equation?', '<br><img tmp="notinline" src="https://www.zhihu.com/equation?')
 soup = BeautifulSoup(html_doc, features='html.parser')
 imgs = soup.find_all('img')
 
@@ -20,16 +22,15 @@ if targetUrl[-1] != os.sep:
     targetUrl = targetUrl + os.sep
 targetHTMLUrl = targetUrl + article_number_str + '.html'
 targetMdUrl = targetUrl + article_number_str + '.md'
-targetDirUrl = targetUrl + article_number_str + '_assets' + os.sep
-os.mkdir(targetDirUrl)
-
-counter = 0
+targetDirUrl = targetUrl + article_number_str + '_assets'
+if not os.path.exists(targetDirUrl):
+    os.mkdir(targetDirUrl)
 
 for img in imgs:
     res = urllib.request.urlopen(img['src']).read()
     image_title = img['src'].split('/')[-1]
     if 'equation' not in image_title:
-        path = targetDirUrl + image_title
+        path = targetDirUrl + os.sep + image_title
         with open(path, 'wb') as f:
             f.write(res)
         img.attrs.clear()
@@ -46,8 +47,11 @@ for img in imgs:
     if 'equation' in image_title:
         tex_doc = img['alt']
         img.name = 'span'
+        if 'tmp' in img.attrs:
+            img.string = '$$' + tex_doc + '$$'
+        else:
+            img.string = '$' + tex_doc + '$'
         img.attrs.clear()
-        img.string = '$' + tex_doc + '$'
 
 targetMarkdown = soup.prettify()
 
