@@ -55,7 +55,6 @@ for img in imgs:
         relativePath = '.' + os.sep + article_number_str + '_assets' + os.sep + tmp + '.svg'
         with open(path, 'wb') as tex_file:
             tex_file.write(res)
-        img['tmp'] = tmp
         img['src'] = relativePath
         texIndexCount = texIndexCount + 1
     imgCount = imgCount + 1
