@@ -13,6 +13,7 @@ res = urllib.request.urlopen(url)
 html = res.read().decode('utf-8')
 jsonText = json.loads(html)
 html_doc = jsonText['content']
+html_title = jsonText['title']
 html_doc = html_doc.replace('<br> <img src="https://www.zhihu.com/equation?', '<br> <img tmp="notinline" src="https://www.zhihu.com/equation?')
 html_doc = html_doc.replace('<br><img src="https://www.zhihu.com/equation?', '<br><img tmp="notinline" src="https://www.zhihu.com/equation?')
 soup = BeautifulSoup(html_doc, features='html.parser')
@@ -61,9 +62,11 @@ for img in imgs:
     sys.stdout.write('已处理图片数: ' + str(imgCount) + '\r')
 print('图片处理完成')
 
-targetHTML = soup.prettify()
-
 print('\n正在生成HTML')
+
+targetHTML_content = soup.prettify()
+targetHTML = '<!DOCTYPE html><html lang="zh"><head><meta charset="UTF-8"><title>' + html_title + '</title></head><body>' + targetHTML_content + '</body></html>'
+
 
 with open(targetHTMLUrl, 'w') as file_object:
     file_object.write(targetHTML)
