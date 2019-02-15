@@ -28,11 +28,6 @@ targetDirUrl = targetUrl + article_number_str + '_assets'
 if not os.path.exists(targetDirUrl):
     os.mkdir(targetDirUrl)
 
-isLocal_str = input('是否将公式储存为本地文件[Y/n]: ')
-isLocal = False
-if isLocal_str == 'Y':
-    isLocal = True
-
 print('\n正在下载图片')
 
 texIndexCount = 0
@@ -50,14 +45,12 @@ for img in imgs:
             img_file.write(res)
         img.attrs.clear()
         img['src'] = relativePath
-    elif isLocal:
-        tmp = 'equation' + str(texIndexCount)
-        path = targetDirUrl + os.sep + tmp + '.svg'
-        relativePath = '.' + os.sep + article_number_str + '_assets' + os.sep + tmp + '.svg'
-        with open(path, 'wb') as tex_file:
-            tex_file.write(res)
-        img['src'] = relativePath
-        texIndexCount = texIndexCount + 1
+    else:
+        tex_doc = img['alt']
+        img.string = '$\\displaystyle ' + tex_doc + '$'
+        img.name = 'span'
+        img.attrs.clear()
+        img['class'] = 'text/tex'
     imgCount = imgCount + 1
     sys.stdout.write('已处理图片数: ' + str(imgCount) + '\r')
 print('图片处理完成')
@@ -65,34 +58,26 @@ print('图片处理完成')
 print('\n正在生成HTML')
 
 targetHTML_content = soup.prettify()
-targetHTML = '<!DOCTYPE html><html lang="zh"><head><meta charset="UTF-8"><title>' + html_title + '</title></head><body>' + targetHTML_content + '</body></html>'
+targetHTML_head = '''<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>''' + html_title + '''</title>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'] ],
+        displayMath: [ ['$$','$$'] ]
+    }
+});
+</script>
+</head>'''
+targetHTML = targetHTML_head + targetHTML_content + '</body></html>'
 
 
 with open(targetHTMLUrl, 'w') as file_object:
     file_object.write(targetHTML)
-
-if isLocal:
-    hasTex_str = input('是否在Markdown中使用TeX公式[Y/n]: ')
-    hasTex = False
-    if hasTex_str == 'Y':
-        hasTex = True
-    if hasTex:
-        print('\n正在处理公式')
-        texCount = 0
-        sys.stdout.write('已处理公式数: ' + str(texCount) + '\r')
-        for img in imgs:
-            image_title = img['src'].split('/')[-1]
-            if 'equation' in image_title:
-                tex_doc = img['alt']
-                img.name = 'span'
-                if 'tmp' in img.attrs:
-                    img.string = '$$' + tex_doc + '$$'
-                else:
-                    img.string = '$' + tex_doc + '$'
-                img.attrs.clear()
-                texCount = texCount + 1
-                sys.stdout.write('已处理公式数: ' + str(texCount) + '\r')
-        print('公式处理完成')
 
 targetMarkdown = soup.prettify()
 
