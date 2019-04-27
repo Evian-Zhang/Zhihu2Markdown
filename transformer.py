@@ -73,7 +73,7 @@ MathJax.Hub.Config({
 });
 </script>
 </head>'''
-targetHTML = targetHTML_head + targetHTML_content + '</body></html>'
+targetHTML = targetHTML_head + '<body>' + targetHTML_content + '</body></html>'
 
 
 with open(targetHTMLUrl, 'w') as file_object:
