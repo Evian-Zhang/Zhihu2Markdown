@@ -4,23 +4,56 @@
 
 提供的功能有：
 
-* 将知乎专栏的文章转成 HTML 格式，并且将文章中的图片全部存储到本地
-* 可以选择将文章中的 TeX 公式以 mathjax 的形式加载到 HTML 文档中
 * 将知乎专栏的文章转成 Markdown 格式，并且将文章中的图片全部存储到本地
 * 可以选择将文章中的 TeX 公式以 TeX 代码的形式加载到 Markdown 文档中
 * 目前暂未支持文章中插入视频
 
-## python 包依赖
+## 安装
 
-* bs4
-* html2text
+将本仓库下载或克隆至本地，并且本地需安装Python 3.8及以上版本，包依赖在`requirements.txt`中有描述。
 
 ## 使用方法
 
 在终端下进入该脚本文件所在文件夹，运行
 
-```bash
-python transformer.py
+```shell
+python zhihu2markdown.py --help
 ```
 
-即可。
+即可获得使用方法：
+
+```
+usage: zhihu2markdown.py [-h] [-o OUTPUT] [-i IMAGE_DIR] [-a USER_AGENT]
+                         article_url
+
+Transform zhihu article to Markdown format
+
+positional arguments:
+  article_url           URL of zhihu article
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -o OUTPUT, --output OUTPUT
+                        path of output markdown file
+  -i IMAGE_DIR, --image_dir IMAGE_DIR
+                        If present, download image to the image dir path
+  -a USER_AGENT, --user_agent USER_AGENT
+                        User agent
+```
+
+最简单的可以直接
+
+```shell
+python zhihu2markdown https://zhuanlan.zhihu.com/p/124344
+```
+
+同时，也支持将作为库使用：
+
+```python
+from lib.transformer import *
+
+config = Config()
+article = Article(article_id, config)
+
+print(article.markdown)
+```
