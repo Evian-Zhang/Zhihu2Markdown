@@ -23,8 +23,7 @@ python zhihu2markdown.py --help
 即可获得使用方法：
 
 ```
-usage: zhihu2markdown.py [-h] [-o OUTPUT] [-i IMAGE_DIR] [-a USER_AGENT]
-                         article_url
+usage: zhihu2markdown.py [-h] [-o OUTPUT] [-i IMAGE_DIR] [-a USER_AGENT] article_url
 
 Transform zhihu article to Markdown format
 
@@ -44,15 +43,25 @@ optional arguments:
 最简单的可以直接
 
 ```shell
-python zhihu2markdown https://zhuanlan.zhihu.com/p/124344
+python zhihu2markdown https://zhuanlan.zhihu.com/p/56694990
 ```
 
-同时，也支持将作为库使用：
+那么就可以将相应URL的文章转为Markdown文本。
+
+其它可选选项详见`--help`指令。
+
+### 作为库使用
+
+也支持将作为库使用：
 
 ```python
 from lib.transformer import *
 
-config = Config()
+config = Config(
+	user_agent="", # user agent
+	download_image=True, # whether download image
+	asset_path="" # path of downloaded image
+)
 article = Article(article_id, config)
 
 print(article.markdown)
