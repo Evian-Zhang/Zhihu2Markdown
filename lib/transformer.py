@@ -77,10 +77,8 @@ def preprocess_content(content, download_image, asset_path):
 			code_block.parent.parent.unwrap()
 			code_block.parent.unwrap()
 	except: pass
-
-	content = str(soup)
-	#print(content[0:1500])
-	return content
+	
+	return str(soup)
 
 def final_process(raw_markdown):
     # 后处理，用于删除代码块前后的多余空行，删除图片的无效后缀，修改行间公式中错误的 latex 换行符
