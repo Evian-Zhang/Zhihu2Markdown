@@ -6,11 +6,12 @@
 
 * 将知乎专栏的文章转成 Markdown 格式，并且将文章中的图片全部存储到本地
 * 可以选择将文章中的 TeX 公式以 TeX 代码的形式加载到 Markdown 文档中
+* 自动在中英文与行内公式之间插入空格
 * 目前暂未支持文章中插入视频
 
 ## 安装
 
-将本仓库下载或克隆至本地，并且本地需安装Python 3.8及以上版本，包依赖在`requirements.txt`中有描述。
+将本仓库下载或克隆至本地，并且本地需安装 Python 3.8 及以上版本，包依赖在`requirements.txt`中有描述。
 
 ## 使用方法
 
@@ -43,12 +44,12 @@ optional arguments:
 最简单的可以直接
 
 ```shell
-python zhihu2markdown https://zhuanlan.zhihu.com/p/56694990
+python zhihu2markdown.py https://zhuanlan.zhihu.com/p/56694990
 ```
 
-那么就可以将相应URL的文章转为Markdown文本。
+那么就可以将相应 URL 的文章转为 Markdown 文本。
 
-其它可选选项详见`--help`指令。
+其它可选选项详见 `--help` 指令。
 
 ### 作为库使用
 
