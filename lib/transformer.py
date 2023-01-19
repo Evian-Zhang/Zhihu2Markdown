@@ -97,13 +97,13 @@ def final_process(raw_markdown):
 	raw_markdown = re.sub(r'\\\\ \\\\', r'\\\\', raw_markdown)   
  
 	# 中英文空格，latex 公式与周边字符的空格
-	raw_markdown = re.sub('([A-Za-z]+)([\u4e00-\u9fa5]+)', r'\1 \2', raw_markdown)
-	raw_markdown = re.sub('([\u4e00-\u9fa5]+)([A-Za-z]+)', r'\1 \2', raw_markdown)
+	raw_markdown = re.sub('([A-Za-z0-9]+)([\u4e00-\u9fa5]+)', r'\1 \2', raw_markdown)
+	raw_markdown = re.sub('([\u4e00-\u9fa5]+)([A-Za-z0-9]+)', r'\1 \2', raw_markdown)
  
 	raw_markdown = re.sub('([$])([\u4e00-\u9fa5]+)', r'\1 \2', raw_markdown)
 	raw_markdown = re.sub('([\u4e00-\u9fa5]+)([$])', r'\1 \2', raw_markdown)
  
-	raw_markdown = re.sub('([$])([A-Za-z]+)', r'\1 \2', raw_markdown)
-	raw_markdown = re.sub('([A-Za-z]+)([$])', r'\1 \2', raw_markdown)
+	raw_markdown = re.sub('([$])([A-Za-z0-9]+)', r'\1 \2', raw_markdown)
+	raw_markdown = re.sub('([A-Za-z0-9]+)([$])', r'\1 \2', raw_markdown)
 
 	return raw_markdown

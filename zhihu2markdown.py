@@ -19,6 +19,7 @@ if __name__ == '__main__':
 	if args.user_agent:
 		config.user_agent = args.user_agent
 	
+	
  
 	article_pattern = r'https://zhuanlan.zhihu.com/p/(\d.+)/?'
 	objmatch = re.search(article_pattern, args.article_url)
@@ -27,6 +28,9 @@ if __name__ == '__main__':
 
 	article = Article(objmatch.group(1), config)
 	print(objmatch.group(1) + " done!")
+	
+	if args.output == './a.md':
+		args.output = './' + objmatch.group(1) + '.md'
 	output_path = os.path.expanduser(args.output)
 	with open(output_path, 'w') as output_file:
 		output_file.write(article.markdown)
