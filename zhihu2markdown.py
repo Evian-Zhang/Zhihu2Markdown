@@ -33,4 +33,9 @@ if __name__ == '__main__':
 		args.output = './' + objmatch.group(1) + '.md'
 	output_path = os.path.expanduser(args.output)
 	with open(output_path, 'w') as output_file:
-		output_file.write(article.markdown)
+		try:
+			fileXML.write(doc+"\n")
+			output_file.write(article.markdown)
+		except Exception as e:
+			article.markdown = article.markdown.encode("GBK",'ignore').decode("GBK",'ignore')
+			output_file.write(article.markdown)
